@@ -1,0 +1,33 @@
+diff --git a/src/bug.adb b/src/bug.adb
+index d3ab974..0691167 100644
+--- a/src/bug.adb
++++ b/src/bug.adb
+@@ -15,7 +15,10 @@
+ --  along with this program.  If not, see <gnu.org/licenses>.
+ 
+ with Ada.Command_Line; use Ada.Command_Line;
++with Ada.Interrupts.Names;
++use Ada.Interrupts.Names;
+ with GNAT.Directory_Operations;
++with GNAT.OS_Lib;
+ with Simple_IO; use Simple_IO;
+ with Version;
+ 
+@@ -28,6 +31,9 @@ package body Bug is
+    --   in gnat 3.15p
+    GNAT_Version : constant String (1 .. 31 + 15);
+    pragma Import (C, GNAT_Version, "__gnat_version");
++   -- Don't handle signals in the ADA runtime so AFL can detect them and log a crash
++   pragma Interrupt_State(Ada.Interrupts.Names.SIGABRT, SYSTEM);
++   pragma Interrupt_State(Ada.Interrupts.Names.SIGSEGV, SYSTEM);
+ 
+    function Get_Gnat_Version return String
+    is
+@@ -96,5 +102,7 @@ package body Bug is
+       end if;
+       Put_Line_Err
+         ("******************************************************************");
++      -- Hard crash GHDL to log a crash in AFL
++      GNAT.OS_Lib.OS_Abort;
+    end Disp_Bug_Box;
+ end Bug;
