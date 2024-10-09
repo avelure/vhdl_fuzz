@@ -1,6 +1,9 @@
 #!/bin/bash
-docker build -t afl_ghdl ./
+docker build \
+	-t vhdl_fuzz .
 
 docker run \
-	--mount type=bind,source="$(pwd)"/../afl_work,target=/work \
-	-it afl_ghdl
+	--privileged \
+	--mount type=bind,source="$(pwd)"/work,target=/work \
+	--security-opt seccomp=unconfined \
+	-it vhdl_fuzz
