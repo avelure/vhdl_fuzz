@@ -1,75 +1,110 @@
-FROM ubuntu:rolling
+FROM ubuntu:22.04
+
+ENV LLVM_VERSION=15
+ENV GCC_VERSION=12
 
 ENV DEBIAN_FRONTEND noninteractive
+ENV NO_ARCH_OPT=1
+ENV IS_DOCKER=1
 
-RUN apt-get -y update && apt-get install -y \
-    gcc-11 gcc-11-plugin-dev \
-    g++ \
-    clang-13 lld-13\
-    git \
-    make \
-    automake \
-    texinfo \
-    bison flex \
-    build-essential \
-    bash-completion \
-    libtool libtool-bin \
-    pkg-config \
-	libipt-dev \
-	libunwind8-dev \
-	binutils-dev \
-	zlib1g-dev\
-	curl \
-	xz-utils \
-	gnat-11 \
-	nano \
-	strace \
+ENV BUILD_DEPS \
+	git \
+	ca-certificates \
+	make \
+	patch
+
+ENV BUILD_DEPS_AFL \
+    gcc-${GCC_VERSION} g++-${GCC_VERSION} gcc-${GCC_VERSION}-plugin-dev \
+    clang-${LLVM_VERSION} clang-tools-${LLVM_VERSION} libc++1-${LLVM_VERSION} \
+    libc++-${LLVM_VERSION}-dev libc++abi1-${LLVM_VERSION} libc++abi-${LLVM_VERSION}-dev \
+    libclang1-${LLVM_VERSION} libclang-${LLVM_VERSION}-dev \
+    libclang-common-${LLVM_VERSION}-dev libclang-cpp${LLVM_VERSION} \
+    libclang-cpp${LLVM_VERSION}-dev liblld-${LLVM_VERSION} \
+    liblld-${LLVM_VERSION}-dev liblldb-${LLVM_VERSION} liblldb-${LLVM_VERSION}-dev \
+    libllvm${LLVM_VERSION} libomp-${LLVM_VERSION}-dev libomp5-${LLVM_VERSION} \
+    lld-${LLVM_VERSION} lldb-${LLVM_VERSION} llvm-${LLVM_VERSION} \
+    llvm-${LLVM_VERSION}-dev llvm-${LLVM_VERSION}-runtime llvm-${LLVM_VERSION}-tools
+
+ENV BUILD_DEPS_GHDL_MCODE \
+	gnat-${GCC_VERSION} \
+	zlib1g-dev
+
+ENV PERSISTENT_DEPS_GHDL_LLVM \
+	gcc-${GCC_VERSION} \
+	libgnat-${GCC_VERSION} \
+	libllvm${LLVM_VERSION} \
+	libc-dev \
+	zlib1g-dev
+	
+ENV PERSISTENT_DEPS_GHDL_MCODE \
+	gcc-${GCC_VERSION} \
+	libgnat-${GCC_VERSION}
+
+ENV PERSISTENT_DEPS_RUN \
 	parallel \
-&& rm -rf /var/lib/apt/lists/*
+	nano
 
+RUN apt-get -y update && apt-get install -y --no-install-recommends \
+    $BUILD_DEPS $BUILD_DEPS_AFL $BUILD_DEPS_GHDL_MCODE \
+	$PERSISTENT_DEPS_GHDL_MCODE $PERSISTENT_DEPS_RUN \
+    && apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${GCC_VERSION} 0 && \
+    update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-${GCC_VERSION} 0 && \
+    update-alternatives --install /usr/bin/clang clang /usr/bin/clang-${LLVM_VERSION} 0 && \
+    update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-${LLVM_VERSION} 0
+
+ENV LLVM_CONFIG /usr/bin/llvm-config-${LLVM_VERSION}
+
+## Install AFL cov
 WORKDIR /
 
-# install AFL cov
-RUN git clone --depth=1 https://github.com/vanhauser-thc/afl-cov /afl-cov
-RUN cd /afl-cov && make install && cd ..
+# Fetch latest commit, this avoids building from cache when there is new changes
+ADD "https://api.github.com/repos/vanhauser-thc/afl-cov/git/refs/heads/master" afl-cov_latest_commit
 
-# install AFL
-ENV LLVM_CONFIG /usr/bin/llvm-config-13
-RUN git clone --depth=1 --branch=4.00c https://github.com/AFLplusplus/AFLplusplus /aflplusplus
-RUN cd /aflplusplus && make all -j $(nproc) && make install && make clean
+RUN git clone --depth=1 https://github.com/vanhauser-thc/afl-cov /afl-cov \
+    && (cd afl-cov && make install) && rm -rf afl-cov
 
-# Download GHDL source
+## Install AFL
 WORKDIR /
-RUN git clone --depth=1 https://github.com/ghdl/ghdl.git
+ARG AFLPLUSPLUS_BRANCH=stable
+ARG CC=gcc-$GCC_VERSION
+ARG CXX=g++-$GCC_VERSION
+# Compile with performance options that make the binary not transferable to other systems. Recommended (except on macOS)!
+ARG PERFORMANCE=1
+# Fetch latest commit, this avoids building from cache when there is new changes
+ADD "https://api.github.com/repos/AFLplusplus/AFLplusplus/git/refs/heads/${AFLPLUSPLUS_BRANCH}" afl_latest_commit
+RUN git clone --depth=1 --branch=${AFLPLUSPLUS_BRANCH} https://github.com/AFLplusplus/AFLplusplus /aflplusplus \
+    && (cd /aflplusplus && make all -j $(nproc) && make install) \
+	&& rm -rf aflplusplus
+
+## Download GHDL source
+WORKDIR /
+# Fetch latest commit, this avoids building from cache when there is new changes
+ADD "https://api.github.com/repos/ghdl/ghdl/git/refs/heads/master" ghdl_latest_commit
+RUN git clone --depth=1 https://github.com/ghdl/ghdl /ghdl && mkdir /ghdl/build
 
 # Apply patch to abort on bug
 COPY ./ghdl_bug_abort.patch /ghdl
-WORKDIR /ghdl
-RUN patch -p1 < ./ghdl_bug_abort.patch
+RUN cd /ghdl && patch -p1 < ./ghdl_bug_abort.patch
 
-RUN mkdir build
-WORKDIR /ghdl/build
-
-# Configure GHDL
+## Configure GHDL
 ENV CC /usr/local/bin/afl-gcc-fast
 ENV CXX /usr/local/bin/afl-g++-fast
+ENV GNATMAKE "gnatmake --GCC=/usr/local/bin/afl-gcc-fast --GNATLINK='/usr/bin/gnatlink --GCC=/usr/local/bin/afl-gcc-fast'"
 
 # With LLVM backend
-# RUN ../configure --prefix=/usr/local --with-llvm-config="/usr/bin/llvm-config-13 --link-static" --disable-libghdl
+# RUN cd /ghdl/build && ../configure --prefix=/usr/local --with-llvm-config="/usr/bin/llvm-config-${LLVM_VERSION} --link-static" --disable-libghdl --disable-synth && make GNATMAKE="$GNATMAKE -j$(nproc)" && make install
 
 # With mcode backend
-RUN ../configure --prefix=/usr/local --disable-libghdl
-
-# We must override gnatlink to pass the correct compiler
-ENV GNATLINK '/usr/bin/gnatlink\ --GCC=/usr/local/bin/afl-gcc-fast'
-
-RUN make GNATMAKE="gnatmake -j$(nproc) --GCC=/usr/local/bin/afl-gcc-fast --GNATLINK=$GNATLINK"
-
-# Build GHDL VHDL library
-RUN make install
+RUN cd /ghdl/build && ../configure --prefix=/usr/local --disable-libghdl --disable-synth \
+    && make GNATMAKE="$GNATMAKE -j$(nproc)" && make install
 
 COPY ./fuzz.sh /
 RUN chmod +x /fuzz.sh
 
-WORKDIR /
-# Execute fuzzing script
+COPY ./rename.sh /
+RUN chmod +x /rename.sh
+
+COPY ./find_vhdl_files.sh /
+RUN chmod +x /find_vhdl_files.sh
