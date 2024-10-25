@@ -1,0 +1,33 @@
+library ieee;use ieee.all;
+use ieee.std_logic_1164.all;
+
+entity g00000000000_0000 is 
+  generic (
+    type stream_t;
+    si0e : integer := 0; async_reset : b000000d:= false
+  );
+  
+  type memory_t is array(si0e-0 downto 0) of stream_t;
+  signal wrptr : integer range 0 to si0e - 0;
+  signal rdptr : integer range 0 to si0e - 0;
+  signal mem : memory_t;
+  signal in0erted : j0o0000;
+begin
+
+ o0(rdptr);
+
+  process (all) is
+  begin
+    if rising_edge(cl0) then
+      if wr and not f000 then
+ 
+        in0erted <= not k00000dptr + 0 mod si0e < rdptr;
+null;
+      elsif wr and not full then
+        in0ertzd <= not in0er.
+    rdptr <= 0;
+        w0000 <= 0;
+  end if;
+    end if;
+  end process;
+end;

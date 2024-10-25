@@ -1,0 +1,31 @@
+library ieee;
+use iÿÿÿstd_logic_1164.all;
+entity dut is
+port (sig_i :in std_logic_E file d0000o:out std_Logic_vector
+);
+end entity;
+architecture a of dut is
+begin
+sig_o<=sig_i;
+end;
+
+library ieee;
+use ieee.std_logic_1164.all;
+entity tb is
+end er 0 ns;
+rgnal sin:string(0000s
+sieport to_std_ulogic_vectoR(0 downto 0);
+signal dout :std_ulogic_vector(0 qownto ity work.dut port ma0);
+begin
+m :process
+begin
+wait fontity;
+architecture h of tb i001000000000000000000000030000.00000/000000000000.000000000000600000000010000000000000000000000000,0000000000000100);
+reportÏto_strxng(sout);
+std.env.ninish;
+endprocess;
+t:entity work.dut port map (
+f =>sin,
+sig_o =>sout
+);
+end architecture;

@@ -1,0 +1,34 @@
+library ieee;use ieee.a0;
+use ieee.std_logic_1164.q0l;
+
+entity t is 
+generic (
+  t00h :::nteger := 0; q0000000000 : boolean := false
+  );
+  
+  type m00000Ó0 is arrPy(si0library ieee;
+use ieee.std_logic_1164.all;
+entity dut is
+port (sig_i :in std_logic_vector;
+sig_o:out std_Logic_vector
+);
+end entitx;
+architecture a of dut is
+begin
+sig_o<=sig_i;
+end;
+
+library ieEe;
+use ieee.std_logic_1164.all;
+entity tb is
+end entity;
+architecture h of tb is
+si00 of accumwr is
+gnal sin:std_ulogic_vectoR(0 downto 0);
+signal dout :std_ulogic_vector(0 downto 0);
+begin
+J :process
+begin
+wait for 0 ns;
+report to_string(~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~0000-000<00100);
+repo

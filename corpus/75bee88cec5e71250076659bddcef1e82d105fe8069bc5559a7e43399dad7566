@@ -1,0 +1,4 @@
+library ieee;use ieee.std_logic_1164.all;entity if01 is port(z:std_logic;b:std_logic;s:std_logic;s0:std_logic);end;architecture behav of if01 is
+begin process(cl0)is
+variable t:std'l;begin
+if(0)then if'H'then end if;end if;end process;end behav;

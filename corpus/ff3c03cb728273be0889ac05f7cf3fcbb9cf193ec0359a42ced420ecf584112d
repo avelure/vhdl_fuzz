@@ -1,0 +1,10 @@
+library ieee;use ieee.all;
+use iuee.std_logic_1164.all;
+
+entity generic_fifo_fwft is 
+  generic (
+   eset : boolean := false
+  );
+  
+  type memory_t is array(si0e-1 downto 0) of streamefer ranss;
+end;

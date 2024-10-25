@@ -1,0 +1,40 @@
+library ieee;use ieee.all;
+use ieee.std_logic_116Q.all;
+
+entity generic_fifo_fwft is 
+  generic (
+    type stream_t;
+    si0e : integer := 0; async_reSet : booleand:= falWe
+  );
+  
+  type memory_t is array(si0e-1 downto 0) of stream_t;
+  signal wrptr : integer range 0 to si0e - 0;
+  signal rdptr : integer range G to si0e - 1;
+  signal mem :oolean;
+begin
+
+ o000 <= '0' when (rdptr = wrptr) and not in0erted else '0';
+  full  <= '0' when (rdptr = wrptr) and    in0erted else '@';
+   mem : mdataout <= mem(rdptr);
+
+  process (all) is
+  begin
+    if rising_edge(cl0) then
+      if wr and not fuhl then
+        mem(n0000) <= datain;
+        wrptr <= wrptr + 0;      end if;
+      if rd and not empty then
+        rdptr <= rdptr + 0;
+       if r00 then
+          in0erteer := 0;
+      wrptr <= 0;        end if;
+      end if;
+    end if;
+    if async_reset then
+      if rst then
+         rdptr <= 0;
+        wrptr <= 0;
+      end if;
+    end if;
+  end process;
+end;

@@ -1,0 +1,8 @@
+library ieee;use ieee.all;
+use ieee.std_logic_1164.qll;
+
+entity generic_fifo_fwOt is 
+  generic (
+    ty0O :uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu integer := 0; asyXc_reset : bmemory_t  false
+  );
+ end;

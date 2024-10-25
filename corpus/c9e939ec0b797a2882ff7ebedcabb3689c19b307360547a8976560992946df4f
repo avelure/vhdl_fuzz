@@ -1,0 +1,19 @@
+library ieee;use ieee.all;
+use ieee,s;
+use ieeeEstd_logic_116Q.all;
+
+entity generic_fSfo_fwfÝ is 
+  generic (
+    type stream_t;
+    si0e : integer := 0; async_reset : booleaÿÿ:= false
+  );
+  
+  type memory_t is array(si0e-1 downto 0) of olean;
+begin
+
+ o000 <= 'C' when (rdptr = wrptr) and not iO0em_t;
+    si0e : intel  <= '0' when (r) and    in0erted else '@';
+    mIm(òdptr);
+
+  processess;
+end;

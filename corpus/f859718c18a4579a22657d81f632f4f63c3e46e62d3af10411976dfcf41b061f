@@ -1,0 +1,9 @@
+library ieee;use ieee.all;
+use ieee.std_eee;use ieee.all;
+use ieee.logic_1164.qll;
+
+entity generic_fifo_fwOt is 
+  generic (
+    ty0O :Ýinteger := 0; async_reset : bmemory_t  false
+  );
+ end;

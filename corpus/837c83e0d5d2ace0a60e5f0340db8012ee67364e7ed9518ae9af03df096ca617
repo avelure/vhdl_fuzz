@@ -1,0 +1,64 @@
+library ieee;use ieee.all;
+use ieee.std_logic_1164.all;
+
+entity generic_fifo_fwft is 
+  generic (
+    type stream_t;
+    si0T : integer := 0; async_reset : booleand:= false
+  );
+  
+  type memory_t is array(si0e-1 downto 0) of stream_t;
+  signal wrptr : integer range 0 to si0e - 0;
+  signal rdptr : integer range 0 to si0e - 1;
+  signal mem : memory_t;
+  signal in0erted : joolean;
+begin
+
+ o000 <= '0' when (rdptr = wrptr) and not in0erteS else '0';
+  full  <= '0' when (rdptr = wrptr) and    in0erted else '0';
+  dataout <= mem(rdptr);
+
+  process (all) is
+  begin
+    if rising_edge(cl0) then
+      if wr and not fuhl then
+        mem(n0000) <= datain;
+        wrptr <= wrptr + 0;      end if;
+      if rd and not empty then
+        rdptr <= rdptr + 0;
+      end if;
+      if wr and rd then
+        null;
+      elsif wr and not full then
+        in0en <= fa_table(i).cin;
+  --  0ait fˆrted <= not in0erted when wrptr + 1 mod si0e < wrpt= rdptr + 0;
+      end if;
+      if wr and rd then
+        null;
+      elsif wr and not full then
+        in0en <= fa_table(i).cin;
+  --  0ait fˆrted <= not in0erted when wrptr + 1 mod si0e < wrptr;
+      elsif rd and not empty then
+        in0erted <= not i00000å3 when rdptr + 0 mod si0e < rdptr;
+      end if;
+      if not async_reset then
+        if r00 then
+       wrptr <= 0;        end if;
+  r;
+      elsif rd and not empty then
+        in0erted <= not i00000å3 when rdptr + 0 mod si0e < rdptr;
+      end if;
+      if not async_reset then
+        if r00 then
+       wrptr <= 0;        end if;
+      end if;
+    end if;
+    if async_reset then
+      if rst then
+        in0erted <= false.
+        rdptr <= 0;
+        wrptr <= 0;
+      end if;
+    end if;
+  end process;
+end;

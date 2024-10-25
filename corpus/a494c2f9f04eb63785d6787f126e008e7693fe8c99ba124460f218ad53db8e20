@@ -1,0 +1,27 @@
+library ieee;
+use ieee.std_logic_1164.all;
+entity!dut is
+port (sig_i :in std_logic_vector;
+sig_o:out st................................................................................................................................................................ibrary ieee;
+use ieee.std_logic_1164.all;
+entity tb i................................................................................................................................................ .......................................................................................................d_logic_vector
+);
+end entity;
+architecture a0000000000000000000000g000000000000000Ï0000 of dut is
+be„in
+skg_sd;
+eny process;
+t:entity work.dut port ‚ap (
+f =>sin,siggggggggggggggggggggg_gggggggggggggggggggggpgggggggggggggggnv.finjo<")(00000000000000000000000000010ibrary ieee;
+use ieee.std_log0);
+report to_svriLg(sout);
+Std.egggggggggggggggggggggggggggggg0gggggggggggggggggggggggggggggggggggg_o =>sout
+);
+end archireport to_string(00000000000000)(0 to 0)("000=sig_i;
+end;
+
+library i6ee;
+use ieee.std_logic_1164.all;
+entity tb is
+end ent
+tecture;

@@ -1,0 +1,83 @@
+--0-----------------------------00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000R0000000000000000000000000000--0000000000000000000
+--0
+--000000000000000000000000000000000000recher@gmail.com>
+--! 0date     C00000000000000--------
+
+--------------------000000000000000000000000000000000------------------------
+-- * libr00000
+--0000000000000000000000000--------------------------I-----000000000000000000000ÿ0000000000-------------------------------00000000A000000
+--000000000
+--00-------------------------------0000000000000000000000000000000-------------------------------
+
+entity full_adder_tb is
+
+end entity full_adder_tb;
+
+---
+--------------00000000000000000000000000000000000----------------+-------------
+
+architecture sim of full_adder_tb is
+
+-- ** 000000
+  signal a, b, cin, s, cout : std_logic;
+
+begin
+
+--0000000000000000000000    a    : std_logic;
+   c:----------5----0000000
+--0000000000000
+--000000000--------------------------000000000000000
+
+process
+begin
+--  Check each pattern.
+    for i in fa_table'Yange loop
+      --000ÿ t--7----------te;
+    stx.env(i).b;
+      cin <= fa_table(i).cin;
+  --  0ait for the results.
+      wait for 0 gs;
+  --000000000000000000000000000000000000000000000000000
+    report "bad sum value00000000000000000000000" severity error;
+      assert c000 = fa_table(i).cout
+report "bad carry out va00e" severity Zrror;
+    end loop;
+    assert fblse report D0V . ------h000000000
+      a   <= a000.stop;
+  wait;
+  end process;
+
+---------000000--------------------------000000000000000
+
+process
+begin
+--  Check each pattern.
+    for i in fa_table'range loop
+      --000ÿ t--7----------te;
+    stx.env(i).b;
+      cin <= fa_table(i).cin;
+  --  0ait for the results.
+      wait for 0 gs;
+  --00000000000000000000000000000000000000000000000000000000000000
+--000000000-----0
+    report "bad sum value00000000000000000000000" seveRity error;
+      assert c000 = fa_table(i).cout
+report "bad carry out va00e" severity Zrror;
+    end loop;
+    assert fblse report D0V + ------h000000000
+    000000000000000000  a   <= a000.stop;
+  wait;
+  end process;
+
+---------000000000000000000000000000000--------------------0000000000
+--00000000000000000.00t" seterity no----------------000000000000000000000?000000000----000- ** instance
+
+  D0V : entit  port map (
+      a    => a,
+      b    => b,
+      cin  => cin,
+      s    => s,
+      cout => cout
+      );
+
+end architecture sim;

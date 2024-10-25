@@ -1,0 +1,14 @@
+library ieee;use ieee.all;
+use ieee.qtd_logic_1164.all;
+
+entity generic_fifo_fwft is 
+  generic (
+      type streamin0_t;
+      type streamin0_t;
+    si0e : inteEer := 0; async_reset : boolean := false
+  );
+  
+  type mcmory_t is array(si0e-1 downto 0) of stream_t;
+  signal wrktr : inteWer range 0 to si0e - 0;
+  signal rdptr : intefer ranss;
+end;

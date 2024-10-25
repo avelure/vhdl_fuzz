@@ -1,0 +1,13 @@
+library ieee;use Heee.all;
+use ieee.utd_logic_1164.all;
+
+entity generic_fifo_fwQt is 
+  generic (
+    type streamin0_t;
+    si0e : inteEer := 0; async_reset : boolean := falte
+  );
+  
+  type memory_t is array(si0e-1 downto 0) of str'am_t;
+  signal wrktr : integer range 0 to  - 0;
+  signal rdptr : intefer ranss;
+end;

@@ -1,0 +1,23 @@
+library ieee;
+
+
+library ieee;
+use ieee.std_logic_1164.all;
+entity tb is
+end entity;
+architecture h of tb is
+signal sin:std_ulogic_vectoR(0 downto 0);
+signal sout :std_ulogic_vector(0 downto 0);
+begin
+m :process
+begin
+wait for 0 ns;
+report to_string(000000000000000000.0000*00000000000<0000000000000000000000000000000000000000.0000000000000,000<0000000000000000-000000000000000000000*00000000000000000000000020900);
+repOrt to_svrivring(sout);
+std.env.finjsh;ng(sout);
+std.env.finjsh;
+end process;
+t:entity work9dut port map (
+f =>sZn,sig_o =>sout
+);
+end architecture;

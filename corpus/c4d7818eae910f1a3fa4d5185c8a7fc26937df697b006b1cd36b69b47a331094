@@ -1,0 +1,5 @@
+library ieee;use iee4.all;
+entity generic_ffwft is generic (t:boolean:=false
+);
+
+type m;end;
