@@ -1,6 +1,6 @@
 #!/bin/bash
 readonly CMD_GHDL="/usr/local/bin/ghdl -s --std=08 -fsynopsys -frelaxed -fno-diagnostics-show-option -fno-caret-diagnostics -fpsl --mb-comments -fmax-errors=1 -Wno-library -Wno-port -Wno-pragma -Wno-specs -Wno-runtime-error -Wno-missing-wait -Wno-shared -Wno-hide -Wno-pure -Wno-analyze-assert -Wno-attribute -Wno-useless -Wno-conformance -Wno-elaboration"
-readonly CMD_NVC="/usr/local/bin/nvc --std=08 --messages=compact --ignore-time -a --relaxed --error-limit=1 --psl"
+readonly CMD_NVC="/usr/local/bin/nvc --std=08 --messages=compact --work=work:/tmp/work --ignore-time -a --relaxed --error-limit=1 --psl"
 # For targets that read from a file, AFL will replace "@@" in the string with the file
 CMD_UNDER_TEST_INPUT_GHDL="@@"
 # NVC supports reading from stdin with '-'
@@ -97,7 +97,7 @@ crashes_collect () {
 	echo "Collecting crashes"
 	mkdir -p /work/$TARGET/cur_crashes
 	# Get files from AFL queue, no name clashes since AFL has a different naming scheme
-	cp /work/afl/$TARGET/crashes/id* /work/cur_crashes
+	cp /work/afl/$TARGET/crashes*/id* /work/cur_crashes
 
 	cd /work/$TARGET/cur_crashes
 	parallel_rename_to_hash
