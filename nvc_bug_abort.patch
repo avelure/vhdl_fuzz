@@ -1,0 +1,40 @@
+diff --git a/src/diag.c b/src/diag.c
+index 806f74fa..7d7436da 100644
+--- a/src/diag.c
++++ b/src/diag.c
+@@ -1055,7 +1055,7 @@ void diag_femit(diag_t *d, FILE *f)
+       || (opt_get_int(OPT_UNIT_TEST) && d->level > DIAG_DEBUG);
+ 
+    if (is_error && relaxed_add(&n_errors, 1) == error_limit)
+-      fatal("too many errors, giving up");
++      _exit(2);
+ 
+  cleanup:
+    for (int i = 0; i < d->hints.count; i++)
+diff --git a/src/util.c b/src/util.c
+index 59f532d7..a1995a02 100644
+--- a/src/util.c
++++ b/src/util.c
+@@ -496,6 +496,9 @@ void fatal_exit(int status)
+ {
+    async_barrier();
+ 
++   signal(SIGABRT, SIG_DFL);
++   abort();
++
+    if (atomic_load(&crashing) != SIG_ATOMIC_MAX)
+       _exit(status);   // Exit during crash
+    else if (!thread_attached() || thread_id() != 0)
+@@ -871,6 +874,9 @@ static void signal_handler(int sig, siginfo_t *info, void *context)
+ 
+    show_stacktrace();
+ 
++   signal(SIGABRT, SIG_DFL);
++   abort();
++
+    if (sig != SIGUSR1)
+       _exit(2);
+ #endif  // !__SANITIZE_THREAD__
+-- 
+2.44.0.windows.1
+
